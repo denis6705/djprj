@@ -1,0 +1,88 @@
+{% load static %}
+{% load bootstrap3 %}
+<!DOCTYPE html>
+{% block html %}
+<html lang="ru">
+
+  {% block head %}
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'blabla/css/font-awesome.min.css' %}">
+    <script src="{% static 'blabla/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'blabla/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'blabla/js/moment-with-locales.js' %}"></script>
+    <link href="{% static 'blabla/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'blabla/css/prettify-1.0.css' %}" rel="stylesheet">
+    <link href="{% static 'blabla/css/bootstrap-datetimepicker.css' %}" rel="stylesheet">
+    <script src="{% static 'blabla/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static 'blabla/js/popper.min.js' %}"></script>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% bootstrap_messages %}
+    <script src="{% static 'blabla/js/bootstrap-confirmation.min.js' %}"></script>
+  </head>
+  {% endblock %}
+  {% block body %}
+  <body>
+   {% if user.is_authenticated %}
+{% block nav %}
+<div class="navbar navbar-inverse navbar-static-top" role="navigation">
+<div class="container">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="{% url 'home' %}">
+       <img style="max-width:100px; margin-top: -12px;"  src="{% static 'blabla/jpg/logo.png' %}">
+       <span style="margin-left: 28px;">Поездки</span>
+  </a>
+  </div>
+  <div class="collapse navbar-collapse">
+    <ul class="nav navbar-nav">
+      <li><a href="{% url 'my_trips' %}">Мои поездки</a></li>
+      <li><a href="{% url 'my_subscriptions' %}">Мои брони</a></li>
+      <li class="btn-group"  sytyle="margin-right: 100px;">
+        <a  href="{% url 'logout' %}" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Вы вошли как:
+          {% if user.first_name %}
+            {{ user.first_name }}
+          {% else %}
+            {{ user.username }}
+          {% endif %}
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'logout' %}">Выход</a></li>
+        </ul>
+     </li>
+    </ul>
+  </div><!--/.nav-collapse -->
+</div>
+</div>
+{% endblock %}
+
+<div class="container">
+<div class="content">
+{% block pre_content %}{% endblock %}
+{% block content %}{% endblock %}
+{% block after_content %}{% endblock %}
+  </div>
+</div>
+
+{% block foot %}
+  <footer></footer>
+{% endblock %}
+    {% else %}
+    <script type="text/javascript">
+      window.location.href = "{% url 'login' %}";
+  </script>
+  {% endif %}
+  </body>
+  {% endblock %}
+</html>
+{% endblock %}
